@@ -113,7 +113,30 @@ const ClientPage: React.FC<ClientPageProps> = ({
     productId,
   })
 
-  const orders = ordersHook.data?.items || []
+  const orders = [
+    {
+      id: '1',
+      user: {
+        avatar_url: 'https://via.placeholder.com/40',
+        public_name: 'John Doe',
+        email: 'john.doe@example.com',
+      },
+      created_at: '2023-12-01T10:00:00Z',
+      product: {
+        name: 'Product A',
+        is_archived: false,
+      },
+      amount: 5000,
+      currency: 'USD',
+      tax_amount: 500,
+      discount: { code: 'SAVE10' },
+      custom_field_data: {
+        delivery_notes:
+          'Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch. Leave at the front porch.',
+      },
+    },
+  ]
+
   const pageCount = ordersHook.data?.pagination.max_page ?? 1
 
   const columns: DataTableColumnDef<Order>[] = [
@@ -238,8 +261,15 @@ interface OrderModalProps {
 }
 
 const OrderModal = ({ order }: OrderModalProps) => {
-  const { organization } = useContext(MaintainerOrganizationContext)
-  const { data: customFields } = useCustomFields(organization.id)
+  const customFields = {
+    items: [
+      {
+        slug: 'delivery_notes',
+        name: 'Delivery Notes',
+        type: 'text',
+      }
+    ],
+  }
 
   if (!order) return null
 
